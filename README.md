@@ -282,7 +282,7 @@ The gem is organized into focused, single-responsibility classes:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/nguyentiendzung/apple_pay_decryption.
+Bug reports and pull requests are welcome on GitHub at https://github.com/codewithdzung/apple_pay_decryption.
 
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](CODE_OF_CONDUCT.md).
 
@@ -295,20 +295,6 @@ This project is intended to be a safe, welcoming space for collaboration, and co
 5. Commit your changes (`git commit -am 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
-
-## Comparison with Other Gems
-
-### vs. Gala
-
-**ApplePayDecryption** improves upon [Gala](https://github.com/spreedly/gala) with:
-
-- ✅ Better error handling with specific error classes
-- ✅ Modern Ruby 3.1+ support
-- ✅ Cleaner, more maintainable code architecture
-- ✅ Comprehensive validation before processing
-- ✅ Better documentation and examples
-- ✅ More extensive test coverage
-- ✅ Follows current Ruby best practices
 
 ## Resources
 
@@ -328,13 +314,8 @@ Everyone interacting in the ApplePayDecryption project's codebases, issue tracke
 
 **Nguyen Tien Dzung**
 
-- GitHub: [@nguyentiendzung](https://github.com/nguyentiendzung)
-- Email: dzung.nguyentien@every-pay.com
-
-## Acknowledgments
-
-- Inspired by the [Gala](https://github.com/spreedly/gala) gem by Spreedly
-- Built with reference to Apple's official [Payment Token Format Reference](https://developer.apple.com/documentation/passkit/apple_pay/payment_token_format_reference)
+- GitHub: [@codewithdzung](https://github.com/codewithdzung)
+- Email: imnguyentiendzung@gmail.com
 
 ---
 
