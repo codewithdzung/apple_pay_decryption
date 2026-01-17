@@ -12,4 +12,13 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # Filter out lines from RSpec backtrace
+  config.filter_run_when_matching :focus
+  
+  # Use color in output
+  config.color = true
+  
+  # Use documentation format for detailed output
+  config.default_formatter = "doc" if config.files_to_run.one?
 end

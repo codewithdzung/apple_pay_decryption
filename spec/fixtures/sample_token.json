@@ -1,0 +1,11 @@
+{
+  "data": "QklOQVJZREFUQQ==",
+  "signature": "U0lHTkFUVVJF",
+  "version": "EC_v1",
+  "header": {
+    "ephemeralPublicKey": "RVBIRU1FUkFMS0VZ",
+    "publicKeyHash": "UFVCTEVZS0VZ",
+    "transactionId": "VFJBTVNBQ1RJT04=",
+    "applicationData": "QVBQREVBVEE="
+  }
+}
