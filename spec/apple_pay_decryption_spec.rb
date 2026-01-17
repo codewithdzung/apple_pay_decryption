@@ -7,8 +7,9 @@ RSpec.describe ApplePayDecryption do
 
   describe '.decrypt' do
     let(:token_json) { File.read(File.join(__dir__, 'fixtures', 'sample_token.json')) }
-    let(:certificate_pem) { File.read(File.join(__dir__, 'fixtures', 'merchant_cert.pem')) }
-    let(:private_key_pem) { File.read(File.join(__dir__, 'fixtures', 'merchant_key.pem')) }
+    # Use dummy certificate/key strings for tests that don't actually decrypt
+    let(:certificate_pem) { '-----BEGIN CERTIFICATE-----\nDUMMY\n-----END CERTIFICATE-----' }
+    let(:private_key_pem) { '-----BEGIN EC PRIVATE KEY-----\nDUMMY\n-----END EC PRIVATE KEY-----' }
 
     context 'with valid token and credentials' do
       it 'decrypts the payment token successfully' do
