@@ -7,5 +7,45 @@
 /spec/reports/
 /tmp/
 
-# rspec failure tracking
+# RSpec
 .rspec_status
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Gem files
+*.gem
+
+# Private keys and certificates (NEVER commit these!)
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Test output
+coverage/
+spec/examples.txt
+
+# Documentation
+doc/
+.yardoc/
+
+# Dependency directories
+vendor/bundle/
+
+# RuboCop cache
+.rubocop-*

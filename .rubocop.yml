@@ -1,8 +1,48 @@
+require:
+  - rubocop-rspec
+
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 3.1
+  Exclude:
+    - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
 
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
+# Allow longer lines in specs
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+    - 'apple_pay_decryption.gemspec'
 
-Style/StringLiteralsInInterpolation:
-  EnforcedStyle: double_quotes
+# Allow longer methods in specs
+Metrics/MethodLength:
+  Max: 25
+  Exclude:
+    - 'spec/**/*'
+
+# Allow longer blocks in specs
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'apple_pay_decryption.gemspec'
+    - 'Rakefile'
+
+# Documentation is good but not always needed for every class
+Style/Documentation:
+  Enabled: false
+
+# Allow heredocs for multi-line strings
+Layout/HeredocIndentation:
+  Enabled: true
+
+# RSpec specific configurations
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 5
