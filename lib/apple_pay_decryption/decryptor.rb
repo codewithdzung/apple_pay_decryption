@@ -8,8 +8,8 @@ module ApplePayDecryption
   #
   # @see https://developer.apple.com/documentation/passkit/apple_pay/payment_token_format_reference
   class Decryptor
-    APPLE_OID = "1.2.840.113635.100.6.32"
-    MERCHANT_ID_FIELD = "1.2.840.113635.100.6.32"
+    APPLE_OID = '1.2.840.113635.100.6.32'
+    MERCHANT_ID_FIELD = '1.2.840.113635.100.6.32'
     COUNTER = "\x00\x00\x00\x01"
 
     # Initialize a new decryptor
@@ -65,12 +65,12 @@ module ApplePayDecryption
 
     def load_ephemeral_public_key
       key_data = decode_base64(@ephemeral_public_key)
-      
+
       # The ephemeral public key is in X9.63 format
       # Create an EC key and set the public key point
-      group = OpenSSL::PKey::EC::Group.new("prime256v1")
+      group = OpenSSL::PKey::EC::Group.new('prime256v1')
       point = OpenSSL::PKey::EC::Point.new(group, OpenSSL::BN.new(key_data, 2))
-      
+
       ec_key = OpenSSL::PKey::EC.new(group)
       ec_key.public_key = point
       ec_key
@@ -94,13 +94,13 @@ module ApplePayDecryption
       # Use KDF (Key Derivation Function) as specified by Apple
       # kdf = KDF(SHA256, sharedSecret, algorithm, partyU, partyV)
       merchant_id = extract_merchant_id
-      
+
       kdf_input = [
         COUNTER,
         shared_secret,
-        "\x0d", "id-aes256-GCM", # algorithm identifier
-        "Apple",                  # partyU info
-        merchant_id              # partyV info (merchant ID)
+        "\x0d", 'id-aes256-GCM', # algorithm identifier
+        'Apple', # partyU info
+        merchant_id # partyV info (merchant ID)
       ].join
 
       OpenSSL::Digest::SHA256.digest(kdf_input)
@@ -108,14 +108,14 @@ module ApplePayDecryption
 
     def extract_merchant_id
       certificate = OpenSSL::X509::Certificate.new(@certificate_pem)
-      
+
       # Extract merchant ID from certificate extensions
       certificate.extensions.each do |ext|
         next unless ext.oid == MERCHANT_ID_FIELD
-        
+
         # Parse the extension value to extract the merchant ID
-        merchant_id_hex = ext.value.unpack1("H*")
-        return [merchant_id_hex].pack("H*")
+        merchant_id_hex = ext.value.unpack1('H*')
+        return [merchant_id_hex].pack('H*')
       end
 
       # Fallback: use transaction ID
@@ -128,19 +128,19 @@ module ApplePayDecryption
       # Extract initialization vector and encrypted data
       # The first 16 bytes are the IV, the rest is ciphertext + tag
       iv = encrypted_data[0...16]
-      ciphertext_and_tag = encrypted_data[16..-1]
-      
+      ciphertext_and_tag = encrypted_data[16..]
+
       # The last 16 bytes are the authentication tag
-      auth_tag = ciphertext_and_tag[-16..-1]
+      auth_tag = ciphertext_and_tag[-16..]
       ciphertext = ciphertext_and_tag[0...-16]
 
       # Decrypt using AES-256-GCM
-      cipher = OpenSSL::Cipher.new("aes-256-gcm")
+      cipher = OpenSSL::Cipher.new('aes-256-gcm')
       cipher.decrypt
       cipher.key = symmetric_key
       cipher.iv = iv
       cipher.auth_tag = auth_tag
-      cipher.auth_data = ""
+      cipher.auth_data = ''
 
       cipher.update(ciphertext) + cipher.final
     rescue OpenSSL::Cipher::CipherError => e

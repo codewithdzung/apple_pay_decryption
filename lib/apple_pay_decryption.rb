@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "openssl"
-require "json"
-require "base64"
+require 'openssl'
+require 'json'
+require 'base64'
 
-require_relative "apple_pay_decryption/version"
-require_relative "apple_pay_decryption/errors"
-require_relative "apple_pay_decryption/payment_token"
-require_relative "apple_pay_decryption/decryptor"
-require_relative "apple_pay_decryption/signature_verifier"
+require_relative 'apple_pay_decryption/version'
+require_relative 'apple_pay_decryption/errors'
+require_relative 'apple_pay_decryption/payment_token'
+require_relative 'apple_pay_decryption/decryptor'
+require_relative 'apple_pay_decryption/signature_verifier'
 
 module ApplePayDecryption
   class << self
@@ -31,7 +31,7 @@ module ApplePayDecryption
     #
     def decrypt(token_json, certificate_pem, private_key_pem, verify_signature: true)
       token = PaymentToken.new(token_json)
-      token.decrypt(certificate_pem, private_key_pem, verify_signature: verify_signature)
+      token.decrypt(certificate_pem, private_key_pem, verify: verify_signature)
     end
 
     # Verify the signature of an Apple Pay payment token
@@ -40,7 +40,7 @@ module ApplePayDecryption
     # @return [Boolean] True if signature is valid
     # @raise [SignatureVerificationError] If signature verification fails
     #
-    def verify_signature(token_json)
+    def verify_signature(token_json) # rubocop:disable Naming/PredicateMethod
       token = PaymentToken.new(token_json)
       token.verify_signature
       true

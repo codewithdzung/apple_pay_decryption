@@ -25,12 +25,12 @@ module ApplePayDecryption
     #
     # @param certificate_pem [String] The merchant certificate in PEM format
     # @param private_key_pem [String] The merchant private key in PEM format
-    # @param verify_signature [Boolean] Whether to verify the signature first
+    # @param verify [Boolean] Whether to verify the signature first
     # @return [Hash] The decrypted payment data
     # @raise [DecryptionError] If decryption fails
     # @raise [SignatureVerificationError] If signature verification fails (when enabled)
-    def decrypt(certificate_pem, private_key_pem, verify_signature: true)
-      verify_signature() if verify_signature
+    def decrypt(certificate_pem, private_key_pem, verify: true)
+      verify_signature if verify
 
       decryptor = Decryptor.new(
         data: @data,
@@ -84,32 +84,28 @@ module ApplePayDecryption
       required_fields = %w[data signature version header]
       missing_fields = required_fields.reject { |field| @token_hash.key?(field) }
 
-      unless missing_fields.empty?
-        raise ValidationError, "Missing required fields: #{missing_fields.join(', ')}"
-      end
+      raise ValidationError, "Missing required fields: #{missing_fields.join(', ')}" unless missing_fields.empty?
 
       required_header_fields = %w[ephemeralPublicKey publicKeyHash transactionId]
-      header = @token_hash["header"]
-      
-      unless header.is_a?(Hash)
-        raise ValidationError, "Header must be a hash"
-      end
+      header = @token_hash['header']
+
+      raise ValidationError, 'Header must be a hash' unless header.is_a?(Hash)
 
       missing_header_fields = required_header_fields.reject { |field| header.key?(field) }
-      unless missing_header_fields.empty?
-        raise ValidationError, "Missing required header fields: #{missing_header_fields.join(', ')}"
-      end
+      return if missing_header_fields.empty?
+
+      raise ValidationError, "Missing required header fields: #{missing_header_fields.join(', ')}"
     end
 
     def extract_fields
-      @data = @token_hash["data"]
-      @signature = @token_hash["signature"]
-      @version = @token_hash["version"]
-      @header = @token_hash["header"]
-      @ephemeral_public_key = @header["ephemeralPublicKey"]
-      @public_key_hash = @header["publicKeyHash"]
-      @transaction_id = @header["transactionId"]
-      @application_data = @header["applicationData"]
+      @data = @token_hash['data']
+      @signature = @token_hash['signature']
+      @version = @token_hash['version']
+      @header = @token_hash['header']
+      @ephemeral_public_key = @header['ephemeralPublicKey']
+      @public_key_hash = @header['publicKeyHash']
+      @transaction_id = @header['transactionId']
+      @application_data = @header['applicationData']
     end
   end
 end

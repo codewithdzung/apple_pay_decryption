@@ -79,7 +79,7 @@ begin
   decrypted_data = token.decrypt(
     certificate_pem,
     private_key_pem,
-    verify_signature: true  # Set to false to skip signature verification
+    verify: true  # Set to false to skip signature verification
   )
   
   puts "Successfully decrypted!"

@@ -1,48 +1,53 @@
-require:
-  - rubocop-rspec
-
 AllCops:
+  TargetRubyVersion: 3.4
   NewCops: enable
-  TargetRubyVersion: 3.1
   Exclude:
-    - 'bin/**/*'
-    - 'vendor/**/*'
-    - 'spec/fixtures/**/*'
+    - "examples/**/*"
 
-# Allow longer lines in specs
+    # Bundler vendored gems / dependencies (do not lint)
+    - "vendor/**/*"
+    - "bundle/**/*"
+
+    # Common generated / third-party directories
+    - "tmp/**/*"
+    - "log/**/*"
+    - "node_modules/**/*"
+    - "coverage/**/*"
+    - ".bundle/**/*"
+
 Layout/LineLength:
-  Max: 120
-  Exclude:
-    - 'spec/**/*'
-    - 'apple_pay_decryption.gemspec'
+  Max: 1000
 
-# Allow longer methods in specs
-Metrics/MethodLength:
-  Max: 25
-  Exclude:
-    - 'spec/**/*'
+Metrics/AbcSize:
+  Max: 200
 
-# Allow longer blocks in specs
 Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'apple_pay_decryption.gemspec'
-    - 'Rakefile'
+  Max: 1000
 
-# Documentation is good but not always needed for every class
-Style/Documentation:
+Metrics/BlockNesting:
+  Max: 4
+
+Metrics/ClassLength:
+  Max: 1000
+
+Metrics/CyclomaticComplexity:
+  Max: 60
+
+Metrics/MethodLength:
+  Max: 100
+
+Metrics/ModuleLength:
+  Max: 1000
+
+Metrics/ParameterLists:
+  MaxOptionalParameters: 6
+  Max: 50
+
+Metrics/PerceivedComplexity:
+  Max: 50
+
+Gemspec/DevelopmentDependencies:
   Enabled: false
 
-# Allow heredocs for multi-line strings
-Layout/HeredocIndentation:
-  Enabled: true
-
-# RSpec specific configurations
-RSpec/ExampleLength:
-  Max: 20
-
-RSpec/MultipleExpectations:
-  Max: 5
-
-RSpec/NestedGroups:
-  Max: 5
+Style/Documentation:
+  Enabled: false

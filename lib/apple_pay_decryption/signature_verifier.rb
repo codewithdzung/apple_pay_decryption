@@ -36,18 +36,16 @@ module ApplePayDecryption
     # @raise [SignatureVerificationError] If signature verification fails
     def verify
       signature_data = decode_base64(@signature)
-      
+
       # Extract the signature from PKCS7 structure
       pkcs7 = OpenSSL::PKCS7.new(signature_data)
-      
+
       # Verify the signature against the signed data
       signed_data = build_signed_data
-      
+
       # In production, you should verify against Apple's root CA
       # For now, we'll just verify the PKCS7 structure is valid
-      unless pkcs7.verify([], nil, signed_data, OpenSSL::PKCS7::NOVERIFY)
-        raise SignatureVerificationError, "Invalid PKCS7 signature structure"
-      end
+      raise SignatureVerificationError, 'Invalid PKCS7 signature structure' unless pkcs7.verify([], nil, signed_data, OpenSSL::PKCS7::NOVERIFY)
 
       # Additional verification: check that the signed data matches what we expect
       verify_signed_data_content(pkcs7, signed_data)
@@ -65,7 +63,7 @@ module ApplePayDecryption
     def verify_structure_only
       signature_data = decode_base64(@signature)
       pkcs7 = OpenSSL::PKCS7.new(signature_data)
-      
+
       signed_data = build_signed_data
       pkcs7.verify([], nil, signed_data, OpenSSL::PKCS7::NOVERIFY)
     rescue StandardError => e
@@ -94,19 +92,17 @@ module ApplePayDecryption
       ].join
     end
 
-    def verify_signed_data_content(pkcs7, expected_data)
+    def verify_signed_data_content(pkcs7, _expected_data) # rubocop:disable Naming/PredicateMethod
       # Extract the signed data from the PKCS7 structure
-      signed_data = pkcs7.data
-      
+      pkcs7.data
+
       # In a full implementation, you would:
       # 1. Verify the certificate chain against Apple's root CA
       # 2. Check certificate validity periods
       # 3. Verify the signature matches the expected data
-      
+
       # For now, we'll do a basic check that the structure is valid
-      unless pkcs7.signers.any?
-        raise SignatureVerificationError, "No signers found in PKCS7 structure"
-      end
+      raise SignatureVerificationError, 'No signers found in PKCS7 structure' unless pkcs7.signers.any?
 
       true
     end
